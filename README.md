@@ -31,7 +31,7 @@ Basic PostgreSQL template for Silverlog that can be used by a .NET backend.
 Use this connection string from your .NET backend:
 
 ```text
-Host=localhost;Port=<POSTGRES_PORT>;Database=silverlog;Username=silverlog;Password=<POSTGRES_PASSWORD>
+Host=localhost;Port=<POSTGRES_PORT>;Database=<POSTGRES_DB>;Username=<POSTGRES_USER>;Password=<POSTGRES_PASSWORD>
 ```
 
 Example configuration:
@@ -39,7 +39,7 @@ Example configuration:
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Port=<POSTGRES_PORT>;Database=silverlog;Username=silverlog;Password=<POSTGRES_PASSWORD>"
+    "DefaultConnection": "Host=localhost;Port=<POSTGRES_PORT>;Database=<POSTGRES_DB>;Username=<POSTGRES_USER>;Password=<POSTGRES_PASSWORD>"
   }
 }
 ```
