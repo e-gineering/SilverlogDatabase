@@ -36,12 +36,14 @@ Replace the angle-bracket placeholders below with the values from your `.env` fi
 Host=localhost;Port=<POSTGRES_PORT>;Database=<POSTGRES_DB>;Username=<POSTGRES_USER>;Password=<POSTGRES_PASSWORD>
 ```
 
-Example configuration using the default values from `.env.example`:
+Template configuration example:
+
+Replace the `__POSTGRES_*__` tokens with the same values from your `.env` file.
 
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Port=5432;Database=silverlog;Username=silverlog;Password=silverlog_password"
+    "DefaultConnection": "Host=localhost;Port=__POSTGRES_PORT__;Database=__POSTGRES_DB__;Username=__POSTGRES_USER__;******"
   }
 }
 ```
