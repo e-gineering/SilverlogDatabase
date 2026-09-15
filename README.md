@@ -45,7 +45,7 @@ Containerized backend configuration example:
 
 If your .NET backend runs in Docker on the same Compose network, use `Host=postgres` and port `5432`.
 
-Replace the `__POSTGRES_*__` tokens with the same values from your `.env` file.
+Configure your backend with a connection string that uses the same database name, username, and password values that PostgreSQL was started with.
 
 ```json
 {
