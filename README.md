@@ -16,6 +16,8 @@ Basic PostgreSQL template for Silverlog that can be used by a .NET backend.
    cp .env.example .env
    ```
 
+   Then update `POSTGRES_PASSWORD` in `.env` to a local password of your choice before starting the database.
+
 2. Start PostgreSQL:
 
    ```bash
