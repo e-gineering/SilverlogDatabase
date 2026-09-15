@@ -38,7 +38,7 @@ Replace the angle-bracket placeholders below with the values from your `.env` fi
 Host=localhost;Port=<POSTGRES_PORT>;Database=<POSTGRES_DB>;Username=<POSTGRES_USER>;Password=<POSTGRES_PASSWORD>
 ```
 
-Template configuration example:
+Containerized backend configuration example:
 
 If your .NET backend runs in Docker on the same Compose network, use `Host=postgres` and port `5432`.
 
@@ -47,7 +47,7 @@ Replace the `__POSTGRES_*__` tokens with the same values from your `.env` file.
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Port=__POSTGRES_PORT__;Database=__POSTGRES_DB__;Username=__POSTGRES_USER__;Password=__POSTGRES_PASSWORD__"
+    "DefaultConnection": "Host=postgres;Port=5432;Database=__POSTGRES_DB__;Username=__POSTGRES_USER__;Password=__POSTGRES_PASSWORD__"
   }
 }
 ```
