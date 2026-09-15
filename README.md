@@ -22,13 +22,15 @@ Basic PostgreSQL template for Silverlog that can be used by a .NET backend.
    docker compose up -d
    ```
 
-3. The database will be available on `localhost:5432` by default (or the value of `POSTGRES_PORT` from `.env`) and the init script will create:
+3. The database will be available on `localhost:5432` by default (or the value of `POSTGRES_PORT` from `.env`) for applications running on your machine. Applications running in Docker on the same Compose network should use `Host=postgres` instead.
+
+   The init script will create:
    - schema: `app`
    - table: `app.logs`
 
 ## .NET connection string
 
-Use this connection string from your .NET backend:
+Use this connection string from your .NET backend when the backend runs on your machine:
 
 Replace the angle-bracket placeholders below with the values from your `.env` file.
 
@@ -37,6 +39,8 @@ Host=localhost;Port=<POSTGRES_PORT>;Database=<POSTGRES_DB>;Username=<POSTGRES_US
 ```
 
 Template configuration example:
+
+If your .NET backend runs in Docker on the same Compose network, use `Host=postgres` and port `5432`.
 
 Replace the `__POSTGRES_*__` tokens with the same values from your `.env` file.
 
