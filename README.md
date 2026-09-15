@@ -43,7 +43,7 @@ Replace the `__POSTGRES_*__` tokens with the same values from your `.env` file.
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Port=__POSTGRES_PORT__;Database=__POSTGRES_DB__;Username=__POSTGRES_USER__;******"
+    "DefaultConnection": "Host=localhost;Port=__POSTGRES_PORT__;Database=__POSTGRES_DB__;Username=__POSTGRES_USER__;Password=__POSTGRES_PASSWORD__"
   }
 }
 ```
