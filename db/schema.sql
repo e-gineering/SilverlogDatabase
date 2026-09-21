@@ -141,6 +141,14 @@ ALTER TABLE public.users ALTER COLUMN user_id ADD GENERATED ALWAYS AS IDENTITY (
 
 
 --
+-- Name: activities activities_entry_id_code_id_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.activities
+    ADD CONSTRAINT activities_entry_id_code_id_key UNIQUE (entry_id, code_id);
+
+
+--
 -- Name: activities activities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -181,19 +189,32 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
--- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_email_key UNIQUE (email);
-
-
---
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (user_id);
+
+
+--
+-- Name: activities_code_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX activities_code_id_idx ON public.activities USING btree (code_id);
+
+
+--
+-- Name: entries_user_id_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX entries_user_id_idx ON public.entries USING btree (user_id);
+
+
+--
+-- Name: users_email_unique_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX users_email_unique_idx ON public.users USING btree (lower(email));
 
 
 --
@@ -235,4 +256,7 @@ INSERT INTO public.schema_migrations (version) VALUES
     ('20260917212537'),
     ('20260917213244'),
     ('20260917224537'),
-    ('20260917224545');
+    ('20260917224545'),
+    ('20260921134004'),
+    ('20260921134005'),
+    ('20260921134006');
