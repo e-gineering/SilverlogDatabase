@@ -60,7 +60,7 @@ is required on this side. From the backend repo:
 
 ### Important: the `role` enum
 
-`users.role` is a native Postgres `ENUM` type (`user_role`, values `admin`/`user`),
+`users.role` is a native Postgres `ENUM` type (`user_role`, values `admin`/`student`),
 not a plain text column. Npgsql needs this mapped explicitly or scaffolding/queries
 against it will fail. Before scaffolding, register the enum mapping:
 
@@ -71,7 +71,7 @@ var dataSource = dataSourceBuilder.Build();
 ```
 
 where `UserRole` is a C# enum with members matching the Postgres labels
-(`Admin`, `User`) — Npgsql matches them case-insensitively by default.
+(`Admin`, `Student`) — Npgsql matches them case-insensitively by default.
 
 ## Schema
 
@@ -84,7 +84,7 @@ users
   user_id  (PK, bigint identity)
   email    (text, not null; unique case-insensitively via index on lower(email))
   name     (text, not null)
-  role     (user_role enum: 'admin' | 'user', not null, default 'user')
+  role     (user_role enum: 'admin' | 'student', not null, default 'student')
 
 entries
   entry_id    (PK, bigint identity)

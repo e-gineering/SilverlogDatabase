@@ -7,8 +7,8 @@ TRUNCATE TABLE activities, entries, codes, users RESTART IDENTITY CASCADE;
 WITH new_users AS (
     INSERT INTO users (email, name, role) VALUES
         ('test.admin@example.test', 'Test Admin', 'admin'),
-        ('test.user1@example.test', 'Test User One', 'user'),
-        ('test.user2@example.test', 'Test User Two', 'user')
+        ('test.user1@example.test', 'Test User One', 'student'),
+        ('test.user2@example.test', 'Test User Two', 'student')
     RETURNING user_id, email
 ),
 new_codes AS (

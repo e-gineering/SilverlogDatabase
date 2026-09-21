@@ -21,7 +21,7 @@ SET row_security = off;
 
 CREATE TYPE public.user_role AS ENUM (
     'admin',
-    'user'
+    'student'
 );
 
 
@@ -122,7 +122,7 @@ CREATE TABLE public.users (
     user_id bigint NOT NULL,
     email text NOT NULL,
     name text NOT NULL,
-    role public.user_role DEFAULT 'user'::public.user_role NOT NULL
+    role public.user_role DEFAULT 'student'::public.user_role NOT NULL
 );
 
 
@@ -259,4 +259,5 @@ INSERT INTO public.schema_migrations (version) VALUES
     ('20260917224545'),
     ('20260921134004'),
     ('20260921134005'),
-    ('20260921134006');
+    ('20260921134006'),
+    ('20260921175425');
