@@ -6,7 +6,67 @@ list of known issues to be aware of while you work (see bottom).
 
 ## Setup steps
 
-1. **Clone the repo, then copy the env file:**
+1. **Install and verify the tools below before doing anything else.** This
+   is the step that's easy to skip and the one that causes the most
+   confusing errors later -- a plain `command not found`, or a `docker
+   compose` command that fails because Docker Desktop was never actually
+   opened. Check each one; don't assume it's already there.
+
+   **Homebrew** (macOS package manager -- everything else here installs
+   through it):
+   ```bash
+   which brew
+   ```
+   If that prints nothing:
+   ```bash
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+   The installer prints its own final step to add Homebrew to your PATH
+   (an `echo ... >> ~/.zshrc` line, slightly different on Intel vs. Apple
+   Silicon Macs) -- run exactly what it tells you to, then open a new
+   terminal tab before continuing.
+
+   **Docker Desktop** (runs local Postgres via `docker compose`):
+   ```bash
+   which docker
+   ```
+   If that prints nothing:
+   ```bash
+   brew install --cask docker
+   ```
+   Installing it is not the same as it running. Docker Desktop has to be
+   **open** (launch it from Applications or Spotlight, like any other app)
+   before any `docker` command works -- if you ever see "Cannot connect to
+   the Docker daemon," this is almost always the fix. It can take a few
+   seconds after opening before it's actually ready.
+
+   **dbmate** (runs migrations):
+   ```bash
+   which dbmate
+   ```
+   If that prints nothing:
+   ```bash
+   brew install dbmate
+   ```
+
+   **psql** (only needed if you want to run manual queries or load
+   `db/seed.sql` yourself -- `dbmate up` doesn't need it):
+   ```bash
+   which psql
+   ```
+   If that prints nothing:
+   ```bash
+   brew install libpq
+   ```
+   `libpq` gives you `psql` without installing a full local Postgres
+   server, but it doesn't add itself to your PATH automatically -- if
+   `which psql` still comes up empty after installing, add it yourself:
+   ```bash
+   echo 'export PATH="/opt/homebrew/opt/libpq/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc
+   ```
+   (Intel Macs: use `/usr/local` instead of `/opt/homebrew` in that line.)
+
+2. **Clone the repo, then copy the env file:**
    ```bash
    cp .env.example .env
    ```
@@ -14,11 +74,6 @@ list of known issues to be aware of while you work (see bottom).
    local dev — you don't need to change anything unless you want your own
    values. See **Known Issues** below before you connect the backend to this
    database, though.
-
-2. **Install dbmate** (if you don't have it):
-   ```bash
-   brew install dbmate
-   ```
 
 3. **Start Postgres:**
    ```bash
@@ -55,6 +110,45 @@ list of known issues to be aware of while you work (see bottom).
 
 At this point the database is ready for the backend to connect to it — see
 that repo's `SETUP_NOTES.md` for the next step.
+
+## Running migrations against Neon instead of local Postgres
+
+For a Render deploy (or any time the database itself isn't local Postgres),
+skip step 3 above (no Docker, no local Postgres server needed) -- migrations
+still get run, just against Neon instead of a local database:
+
+1. Get your Neon connection string from the Neon console's Connect button
+   (the pooled/external one) and put it in `.env` as `DATABASE_URL`, in
+   place of the local one. `.env.example` has a commented template for this.
+   `sslmode=require` is mandatory for Neon's external connections; without
+   it the connection is rejected outright, not just insecure.
+2. Run migrations exactly the same way:
+   ```bash
+   dbmate up
+   ```
+   **This is the part that trips people up, so it's worth spelling out:**
+   `dbmate` reads `.env` automatically -- you don't need to `export` or
+   `source` anything for this step to work. If your `.env` has the right
+   Neon URL in it, `dbmate up` just works, the same as it does locally.
+3. `dbmate up` prints nothing on success -- no "5 tables created!" message,
+   just your prompt back. That's normal, not a sign it silently failed.
+   The real confirmation is in Neon itself: either the Neon console's own
+   activity/monitoring will show a burst of queries right after you run it,
+   or query the SQL Editor there directly:
+   ```sql
+   SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';
+   ```
+4. If you want to verify locally with `psql` instead (or run `db/seed.sql`
+   against Neon), remember `psql` does *not* read `.env` the way `dbmate`
+   does -- it only sees real shell environment variables. Export it first:
+   ```bash
+   export $(grep '^DATABASE_URL=' .env | xargs)
+   echo $DATABASE_URL   # confirm it actually printed your Neon URL, not blank
+   psql "$DATABASE_URL" -c "\dt"
+   ```
+   An empty `echo $DATABASE_URL` here means the export didn't take (a typo
+   in the `.env` line, or a stray space) -- fix that before assuming
+   anything's wrong with Neon or the migrations themselves.
 
 ---
 
