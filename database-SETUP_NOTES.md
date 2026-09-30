@@ -55,7 +55,7 @@ compose` works. `libpq` gives you `psql`.
    psql "$DATABASE_URL" -f db/seed.sql
    ```
 
-   Requires `psql` 17.6+ locally (see README's Prerequisites section for why).
+A compatible `psql` client is sufficient for this seed file; the README's 17.6+ note applies to dbmate's generated schema dump, not this command.
 
 6. **Verify you're up and migrated:**
    ```bash
