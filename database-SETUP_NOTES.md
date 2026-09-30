@@ -7,6 +7,7 @@
    ```bash
    brew install --cask docker
    brew install dbmate libpq
+   export PATH="$(brew --prefix libpq)/bin:$PATH"
    ```
 
    Homebrew itself: https://brew.sh if you don't have `brew`. Docker Desktop
